@@ -373,6 +373,14 @@ function visibleDays() {
   return plan.filter((day) => activeFilter !== "risk" || isHardDay(day));
 }
 
+function fitFullRoute(padding = [56, 56, 56, 56]) {
+  if (!map || !window.AMap) return;
+  const objects = [...polylines, ...markers];
+  if (objects.length) {
+    map.setFitView(objects, false, padding);
+  }
+}
+
 function drawManualMap() {
   if (!map || !window.AMap) return;
   clearMapObjects();
@@ -404,7 +412,7 @@ function drawManualMap() {
     });
   });
 
-  map.setFitView([...polylines, ...markers], false, [40, 40, 40, 40]);
+  fitFullRoute();
 }
 
 function openInfo(day, index) {
@@ -493,6 +501,7 @@ async function tryRidingRoutes() {
   statusEl.textContent = failed
     ? `高德地图已加载；${failed}/${complete} 个分段未返回骑行规划，已保留手工分日路线。`
     : "高德地图已加载，并已按每日途经点尝试绘制骑行路线。";
+  fitFullRoute();
 }
 
 async function autoLoadAmap() {

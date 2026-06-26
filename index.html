@@ -23,10 +23,9 @@
           <p id="map-status" class="status">公开版显示分日路线说明；本地配置地图服务后可加载在线地图。</p>
         </section>
 
-        <div class="filters" role="group" aria-label="地图显示模式">
-          <button class="filter-button active" data-filter="all" type="button">全部</button>
-          <button class="filter-button" data-filter="ride" type="button">骑行日</button>
-          <button class="filter-button" data-filter="risk" type="button">高风险</button>
+        <div class="day-selector" id="day-selector" role="group" aria-label="选择骑行日"></div>
+
+        <div class="quick-links">
           <a class="roadbook-link" href="./roadbook.md">路书</a>
         </div>
 
@@ -86,6 +85,6 @@
     </template>
 
     <script src="./config.public.js?v=20260625-1"></script>
-    <script src="./app.js?v=20260626-2"></script>
+    <script src="./app.js?v=20260626-3"></script>
   </body>
 </html>

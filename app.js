@@ -285,10 +285,11 @@ const plan = [
 let map = null;
 let polylines = [];
 let markers = [];
-let activeFilter = "all";
+let selectedDayIndex = 0;
 
 const statusEl = document.querySelector("#map-status");
 const listEl = document.querySelector("#day-list");
+const daySelectorEl = document.querySelector("#day-selector");
 
 function formatRoute(day) {
   return day.route;
@@ -302,27 +303,42 @@ function dayPlaces(day) {
   return day.points.map((point) => point[0]).join(" → ");
 }
 
+function renderDaySelector() {
+  daySelectorEl.innerHTML = "";
+  plan.forEach((day, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "day-selector-button";
+    button.classList.toggle("active", index === selectedDayIndex);
+    button.classList.toggle("hard", isHardDay(day));
+    button.textContent = String(index + 1);
+    button.title = `${day.day} ${day.route}`;
+    button.addEventListener("click", () => selectDay(index));
+    daySelectorEl.appendChild(button);
+  });
+}
+
 function renderList() {
   const template = document.querySelector("#day-template");
   listEl.innerHTML = "";
-  plan.forEach((day, index) => {
-    const node = template.content.firstElementChild.cloneNode(true);
-    node.dataset.index = String(index);
-    node.dataset.type = day.type;
-    node.dataset.difficulty = day.difficulty;
-    node.querySelector(".day-index").textContent = day.day;
-    node.querySelector(".day-route").textContent = formatRoute(day);
-    node.querySelector(".day-meta").textContent = `${day.km} · 爬升 ${day.climb} · 难度 ${day.difficulty}`;
-    node.querySelector(".day-note").textContent = day.note;
-    node.querySelector(".day-lodging").textContent = day.lodging;
-    node.querySelector(".day-food").textContent = day.food;
-    node.querySelector(".day-roads").textContent = `${day.roads} 途经：${dayPlaces(day)}。`;
-    node.querySelector(".day-risk").textContent = day.riskText;
-    node.querySelector(".day-options").textContent = `少骑：${day.shortOption} 多骑：${day.longOption}`;
-    node.querySelector(".day-why").textContent = day.why;
-    node.querySelector(".day-button").addEventListener("click", () => selectDay(index));
-    listEl.appendChild(node);
-  });
+  const day = plan[selectedDayIndex];
+  const node = template.content.firstElementChild.cloneNode(true);
+  node.dataset.index = String(selectedDayIndex);
+  node.dataset.type = day.type;
+  node.dataset.difficulty = day.difficulty;
+  node.classList.add("selected");
+  node.querySelector(".day-index").textContent = day.day;
+  node.querySelector(".day-route").textContent = formatRoute(day);
+  node.querySelector(".day-meta").textContent = `${day.km} · 爬升 ${day.climb} · 难度 ${day.difficulty}`;
+  node.querySelector(".day-note").textContent = day.note;
+  node.querySelector(".day-lodging").textContent = day.lodging;
+  node.querySelector(".day-food").textContent = day.food;
+  node.querySelector(".day-roads").textContent = `${day.roads} 途经：${dayPlaces(day)}。`;
+  node.querySelector(".day-risk").textContent = day.riskText;
+  node.querySelector(".day-options").textContent = `少骑：${day.shortOption} 多骑：${day.longOption}`;
+  node.querySelector(".day-why").textContent = day.why;
+  node.querySelector(".day-button").addEventListener("click", () => focusSelectedDay());
+  listEl.appendChild(node);
 }
 
 function isHardDay(day) {
@@ -335,27 +351,17 @@ function routeColor(day) {
   return "#0f766e";
 }
 
-function applyFilter(filter) {
-  activeFilter = filter;
-  document.querySelectorAll(".filter-button").forEach((button) => {
-    button.classList.toggle("active", button.dataset.filter === filter);
-  });
-  document.querySelectorAll(".day-card").forEach((card) => {
-    const day = plan[Number(card.dataset.index)];
-    const hidden =
-      (filter === "ride" && day.type !== "ride") ||
-      (filter === "risk" && !isHardDay(day));
-    card.classList.toggle("hidden", hidden);
-  });
-  drawManualMap();
+function selectDay(index) {
+  selectedDayIndex = index;
+  renderDaySelector();
+  renderList();
+  drawManualMap({ fitAll: false });
+  focusSelectedDay();
 }
 
-function selectDay(index) {
-  document.querySelectorAll(".day-card").forEach((card) => {
-    card.classList.toggle("selected", Number(card.dataset.index) === index);
-  });
+function focusSelectedDay() {
   if (!map || !window.AMap) return;
-  const day = plan[index];
+  const day = plan[selectedDayIndex];
   const path = dayPath(day);
   const focusLine = new AMap.Polyline({ path });
   const focusMarkers = path.map((point) => new AMap.Marker({ position: point }));
@@ -369,10 +375,6 @@ function clearMapObjects() {
   markers = [];
 }
 
-function visibleDays() {
-  return plan.filter((day) => activeFilter !== "risk" || isHardDay(day));
-}
-
 function fitFullRoute(padding = [56, 56, 56, 56]) {
   if (!map || !window.AMap) return;
   const objects = [...polylines, ...markers];
@@ -381,20 +383,23 @@ function fitFullRoute(padding = [56, 56, 56, 56]) {
   }
 }
 
-function drawManualMap() {
+function drawManualMap(options = {}) {
   if (!map || !window.AMap) return;
+  const { fitAll = true } = options;
   clearMapObjects();
 
-  visibleDays().forEach((day) => {
+  plan.forEach((day, dayIndex) => {
     const path = dayPath(day);
+    const selected = dayIndex === selectedDayIndex;
     polylines.push(
       new AMap.Polyline({
         path,
         strokeColor: routeColor(day),
-        strokeWeight: day.difficulty === "最高" ? 8 : 6,
-        strokeOpacity: 0.9,
+        strokeWeight: selected ? 10 : day.difficulty === "最高" ? 7 : 5,
+        strokeOpacity: selected ? 1 : 0.62,
         lineJoin: "round",
         lineCap: "round",
+        zIndex: selected ? 80 : 40,
         map,
       }),
     );
@@ -412,7 +417,7 @@ function drawManualMap() {
     });
   });
 
-  fitFullRoute();
+  if (fitAll) fitFullRoute();
 }
 
 function openInfo(day, index) {
@@ -520,10 +525,7 @@ async function autoLoadAmap() {
   }
 }
 
-document.querySelectorAll(".filter-button").forEach((button) => {
-  button.addEventListener("click", () => applyFilter(button.dataset.filter));
-});
-
+renderDaySelector();
 renderList();
 autoLoadAmap();
 

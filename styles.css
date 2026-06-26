@@ -227,24 +227,39 @@ button.secondary {
   line-height: 1.35;
 }
 
-.filters {
+.day-selector {
   display: grid;
-  grid-template-columns: repeat(3, 1fr) 58px;
+  grid-template-columns: repeat(6, 1fr);
   gap: 8px;
 }
 
-.filter-button {
-  min-height: 36px;
+.day-selector-button {
+  min-width: 0;
+  min-height: 38px;
   border: 1px solid var(--line);
   background: #fff;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 900;
 }
 
-.filter-button.active {
+.day-selector-button.hard {
+  color: var(--warn);
+}
+
+.day-selector-button.active {
   border-color: var(--accent);
   background: var(--accent);
   color: #fff;
+}
+
+.day-selector-button.active.hard {
+  border-color: var(--danger);
+  background: var(--danger);
+}
+
+.quick-links {
+  display: grid;
 }
 
 .roadbook-link {
@@ -464,7 +479,7 @@ button.secondary {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .filters {
-    grid-template-columns: repeat(2, 1fr);
+  .day-selector {
+    grid-template-columns: repeat(4, 1fr);
   }
 }

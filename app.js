@@ -338,7 +338,6 @@ let polylines = [];
 let markers = [];
 let selectedDayIndex = 0;
 
-const statusEl = document.querySelector("#map-status");
 const listEl = document.querySelector("#day-list");
 const daySelectorEl = document.querySelector("#day-selector");
 
@@ -426,13 +425,10 @@ function selectDay(index) {
 
 function focusSelectedDay() {
   if (!map || !window.AMap) return;
-  const day = plan[selectedDayIndex];
-  const path = dayPath(day);
-  const lngs = path.map((point) => point[0]);
-  const lats = path.map((point) => point[1]);
-  const southWest = new AMap.LngLat(Math.min(...lngs), Math.min(...lats));
-  const northEast = new AMap.LngLat(Math.max(...lngs), Math.max(...lats));
-  map.setBounds(new AMap.Bounds(southWest, northEast), false, viewportPadding(72));
+  const dayObjects = [...polylines, ...markers].filter((item) => item.__dayIndex === selectedDayIndex);
+  if (dayObjects.length) {
+    map.setFitView(dayObjects, false, viewportPadding(100));
+  }
 }
 
 function clearMapObjects() {
@@ -458,18 +454,18 @@ function drawManualMap(options = {}) {
   plan.forEach((day, dayIndex) => {
     const path = dayPath(day);
     const selected = dayIndex === selectedDayIndex;
-    polylines.push(
-      new AMap.Polyline({
-        path,
-        strokeColor: routeColor(day),
-        strokeWeight: selected ? 10 : day.difficulty === "最高" ? 7 : 5,
-        strokeOpacity: selected ? 1 : 0.62,
-        lineJoin: "round",
-        lineCap: "round",
-        zIndex: selected ? 80 : 40,
-        map,
-      }),
-    );
+    const line = new AMap.Polyline({
+      path,
+      strokeColor: routeColor(day),
+      strokeWeight: selected ? 10 : day.difficulty === "最高" ? 7 : 5,
+      strokeOpacity: selected ? 1 : 0.62,
+      lineJoin: "round",
+      lineCap: "round",
+      zIndex: selected ? 80 : 40,
+      map,
+    });
+    line.__dayIndex = dayIndex;
+    polylines.push(line);
 
     path.forEach((position, index) => {
       const marker = new AMap.Marker({
@@ -479,6 +475,7 @@ function drawManualMap(options = {}) {
         content: `<div class="marker ${isHardDay(day) ? "risk-marker" : ""}">${day.day.replace("D", "")}.${index + 1}</div>`,
         map,
       });
+      marker.__dayIndex = dayIndex;
       marker.on("click", () => openInfo(day, index));
       markers.push(marker);
     });
@@ -528,9 +525,6 @@ async function loadAmap(key) {
   for (const [index, url] of urls.entries()) {
     try {
       const api = await loadAmapScript(url);
-      if (index === 1) {
-        statusEl.textContent = "HTTPS 加载失败，已降级使用 HTTP 加载高德地图。";
-      }
       return api;
     } catch (error) {
       lastError = error;
@@ -553,16 +547,13 @@ function initMap() {
 
 async function autoLoadAmap() {
   if (!MAP_CONFIG.amapKey) {
-    statusEl.textContent = "可查看每日路线、住宿、美食和备选方案。";
     return;
   }
-  statusEl.textContent = "地图加载中。";
   try {
     await loadAmap(MAP_CONFIG.amapKey);
     initMap();
-    statusEl.textContent = "点击 1-12 查看单日路线。";
   } catch (error) {
-    statusEl.textContent = `${error.message}。当前机器的代理可能拦截了 webapi.amap.com；请把 webapi.amap.com 加入代理直连，或关闭代理后刷新。`;
+    // Keep the route notes usable even when the online map fails to load.
   }
 }
 

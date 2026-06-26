@@ -87,15 +87,6 @@ h1 {
   line-height: 1.2;
 }
 
-.api-panel {
-  display: grid;
-  gap: 12px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: #faf7ee;
-  padding: 14px;
-}
-
 label {
   display: grid;
   gap: 6px;
@@ -249,23 +240,6 @@ button.secondary {
 .day-selector-button.active.hard {
   border-color: var(--danger);
   background: var(--danger);
-}
-
-.quick-links {
-  display: grid;
-}
-
-.roadbook-link {
-  display: grid;
-  place-items: center;
-  min-height: 36px;
-  border: 1px solid var(--line);
-  border-radius: 7px;
-  background: #fff;
-  color: var(--accent-strong);
-  font-size: 13px;
-  font-weight: 800;
-  text-decoration: none;
 }
 
 .day-list {

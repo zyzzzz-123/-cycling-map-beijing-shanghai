@@ -15,6 +15,10 @@ const plan = [
     food: "北京出发前可吃豆浆、包子、面条这类稳妥碳水；到武清/北辰后适合吃天津煎饼果子、锅巴菜、牛肉烧饼或面馆，别第一晚吃太油。",
     shortOption: "少骑：住通州或香河，约 45-70km；路线仍走通州-香河，第二天补到静海/青县。",
     longOption: "多骑：继续到静海北侧，约 125-135km；只在出城顺利、无逆风时考虑。",
+    detours: [
+      { type: "避险", text: "北京出城如果四环辅路拥堵，改走清河-望京外缘-通州绿道/辅路，少穿主干路口。" },
+      { type: "撤退", text: "香河是第一天最合适的撤退住宿点，身体不适就在这里收。" },
+    ],
     why: "从清华出发先横穿北京北部和东部，尽量用四环辅路与通州方向出城，避免进二环/三环核心区。替代线是走大兴-廊坊-天津南侧，路不一定更短，且城郊货车和快速路匝道更多。",
     points: [
       ["清华大学", 116.326936, 40.003213],
@@ -40,6 +44,10 @@ const plan = [
     food: "沧州适合补一顿火锅鸡、羊肠汤、驴肉火烧或牛肉面；长途第二天优先选热汤面、米饭盖浇，少喝酒。",
     shortOption: "少骑：住青县或沧州北，约 95-115km；第二天青县-德州会变成长日。",
     longOption: "多骑：到泊头，约 150-165km；不建议常规执行，只适合顺风且身体状态很好。",
+    detours: [
+      { type: "避险", text: "天津外环西侧如果匝道压力大，宁可绕静海县乡路，不进快速路主线。" },
+      { type: "撤退", text: "静海、青县都适合提前住宿，尤其逆风时不要硬顶到沧州。" },
+    ],
     why: "这天把天津城市带一次穿过去，换来 D3 能直接沿沧州-德州平原推进。替代线是经廊坊-霸州-衡水再南下，绕路更多，且不利于后面接聊城-济宁低爬升走廊。",
     points: [
       ["北辰", 117.1355, 39.2246],
@@ -63,6 +71,10 @@ const plan = [
     food: "德州扒鸡很有代表性，但骑行后别只吃肉；搭配米饭、面条、蔬菜汤更适合恢复。",
     shortOption: "少骑：住吴桥，约 80-95km；第二天吴桥-临清/聊城需要补距离。",
     longOption: "多骑：到夏津，约 145-155km；可把 D4 压力降低，但会连续两天长距离。",
+    detours: [
+      { type: "风景/文化", text: "吴桥可作为短停点，适合补给和避开正午大车高峰。" },
+      { type: "避险", text: "G104/G105 货车密时，切泊头、东光、吴桥并行县道，别贴主路硬骑。" },
+    ],
     why: "沧州-德州是最直接的平原走廊，爬升少、补给密。替代线经衡水更西，离后续临清-聊城走廊更绕；经济南会把你带向泰安/鲁中丘陵边缘。",
     points: [
       ["沧州", 116.8575, 38.3106],
@@ -86,6 +98,10 @@ const plan = [
     food: "聊城、临清一带可吃临清烧麦、羊汤、鲁西面食、烧饼夹肉；当天长，晚餐重点补盐和碳水。",
     shortOption: "少骑：住临清或聊城，约 75-105km；第二天必须早起处理黄河过河和济宁长距离。",
     longOption: "多骑：过黄河后到梁山/汶上北，约 145-160km；能明显减轻 D5，但只适合顺风。",
+    detours: [
+      { type: "文化", text: "临清运河老城可短停，但不要把停留拖到下午热风时段。" },
+      { type: "避险", text: "黄河桥如遇施工或禁非机动车，直接改最近普通公路桥，不上高速桥。" },
+    ],
     why: "选临清-聊城-阳谷/梁山，是为了绕开济南-泰安-曲阜一线的起伏和城市交通。替代线经济南更知名但爬升、车流和进出城成本更高。",
     points: [
       ["德州", 116.3575, 37.4341],
@@ -110,6 +126,10 @@ const plan = [
     food: "济宁可吃甏肉干饭、糁汤、夹饼、羊汤；D6 很硬，建议晚餐多吃米饭/面食，早餐提前买好。",
     shortOption: "少骑：住汶上，约 70-85km；第二天汶上-台儿庄会过长，不建议除非 D6 拆分。",
     longOption: "多骑：到邹城西或微山北，约 130-145km；可给 D6 最难日减负，但要避开 G104 快速化主路。",
+    detours: [
+      { type: "撤退", text: "汶上是最稳的少骑住宿点，适合膝盖、跟腱不舒服时提前收。" },
+      { type: "避险", text: "不要为参观点位切曲阜/邹城市中心，D6 已经要经过鲁南丘陵边缘。" },
+    ],
     why: "梁山-汶上-济宁是避开泰安、曲阜、邹城丘陵的关键。替代线走曲阜/邹城文化点更多，但会增加起伏和 G104 重车压力。",
     points: [
       ["梁山北", 116.0958, 35.8024],
@@ -133,6 +153,11 @@ const plan = [
     food: "滕州可吃滕州菜煎饼、辣子鸡、羊肉汤、面食和粥类；这天爬升多，晚餐要补足碳水和盐分。",
     shortOption: "少骑：住邹城或微山北，约 45-80km；第二天再补到滕州/枣庄方向，建议把总行程加 1 天。",
     longOption: "多骑：继续到枣庄市中/峄城外缘，约 125-145km；不建议常规执行，因为 D7 还要处理徐州外缘。",
+    detours: [
+      { type: "避险", text: "G104 主路货车密时，优先切邹城西侧、微山北侧并行县乡路，接受绕路。" },
+      { type: "撤退", text: "邹城、微山北都可撤退住宿；这天不要为了赶到滕州导致夜骑。" },
+      { type: "文化", text: "滕州城区可作为补给停留点，但不要深入拥堵核心。" },
+    ],
     why: "改经滕州后，路线从原本湖西/韩庄运河低地转向 G104 鲁南丘陵边缘，能满足经过滕州市，但牺牲了低爬升优势。替代线是保留原鱼台-微山湖西-台儿庄，爬升更少；或者经济南-泰安-曲阜，更绕且爬升更高。",
     points: [
       ["济宁", 116.5872, 35.4149],
@@ -155,6 +180,11 @@ const plan = [
     food: "枣庄、徐州、睢宁一带可吃辣子鸡、地锅鸡、把子肉、羊肉汤、烙馍卷菜；当天长且起伏多，路上要提前备正餐。",
     shortOption: "少骑：住枣庄市中/峄城、台儿庄或邳州，约 45-105km；这是更稳的安全备选，代价是总行程加 1 天。",
     longOption: "多骑：到宿迁，约 170km 以上；不建议，除非轻装、有顺风且前两天状态非常好。",
+    detours: [
+      { type: "避险", text: "枣庄市中/峄城交通复杂时，从外缘绕行台儿庄外缘再去邳州。" },
+      { type: "撤退", text: "台儿庄或邳州是拆分 D7 的优先住宿点。" },
+      { type: "加里程", text: "状态很好才考虑越过睢宁到宿迁，不建议作为默认目标。" },
+    ],
     why: "经滕州后继续南下，必须在枣庄/峄城和徐州外缘之间做取舍。选择城市外缘和普通省县道，是为了避开徐州市中心、高架和快速路。替代线是从滕州东南切台儿庄再邳州，稍绕但更容易避开主城；直接走枣庄-徐州主走廊更短，但大车和起伏压力更高。",
     points: [
       ["滕州市", 117.1658, 35.1142],
@@ -180,6 +210,10 @@ const plan = [
     food: "淮安是淮扬菜重镇，适合吃软兜长鱼、平桥豆腐、淮安茶馓、阳春面；这一晚适合吃清淡些恢复肠胃。",
     shortOption: "少骑：住宿迁或泗阳，约 55-90km；第二天泗阳-扬州会变长，可改住高邮。",
     longOption: "多骑：到宝应北，约 150-160km；可减轻 D9，但连续长日风险高。",
+    detours: [
+      { type: "风景", text: "宿迁到泗阳可优先贴运河边道路，风景更好但路口仍要慢。" },
+      { type: "撤退", text: "宿迁、泗阳都是优质撤退点；D6/D7 后有伤痛就别硬顶淮安。" },
+    ],
     why: "宿迁-泗阳-淮安沿运河和普通国省道推进，爬升少、补给密。替代线经徐州南下再折东更绕，且城市交通成本高。",
     points: [
       ["睢宁", 117.9414, 33.9137],
@@ -202,6 +236,10 @@ const plan = [
     food: "扬州可吃扬州炒饭、干丝、三丁包、狮子头、阳春面；早餐点心好，但别吃到太晚影响出发。",
     shortOption: "少骑：住高邮，约 80-95km；第二天高邮-常州会增加到约 135-150km。",
     longOption: "多骑：过江到镇江，约 145-155km；能降低 D10 过江不确定性，但别夜间赶汽渡。",
+    detours: [
+      { type: "风景", text: "高邮湖、运河绿道可作为轻松支线，顺风时体验更好。" },
+      { type: "撤退", text: "高邮是最稳的少骑住宿点，适合高温或逆风日。" },
+    ],
     why: "淮安-高邮-扬州沿运河线低爬升、补给密，是全程最适合拉长的一段。替代线走南京方向过江绕路明显，且南京进出城成本高。",
     points: [
       ["淮安", 119.1132, 33.5515],
@@ -224,6 +262,10 @@ const plan = [
     food: "常州可吃银丝面、常州大麻糕、豆腐汤、砂锅类；过江日后建议热汤面加蛋肉，补盐更重要。",
     shortOption: "少骑：住镇江或丹阳，约 45-80km；第二天丹阳-苏州会变成 120km 左右。",
     longOption: "多骑：到无锡西侧，约 145-155km；只有过江很早且城市段顺利时考虑。",
+    detours: [
+      { type: "避险", text: "镇扬汽渡受雾天、大风影响时，先住扬州或镇江，不强行换危险桥路。" },
+      { type: "文化", text: "镇江可短停补给，但不要深入景区拖慢到夜骑。" },
+    ],
     why: "扬州-镇江用汽渡，是为了合法安全过长江，避免大桥/快速路禁行问题。替代线走南京或江阴过江都更绕，且车流压力更大。",
     points: [
       ["扬州", 119.421, 32.3932],
@@ -247,6 +289,10 @@ const plan = [
     food: "苏州可吃苏式汤面、焖肉面、奥灶面、糕团；江南口味偏甜，长途后记得额外补盐。",
     shortOption: "少骑：住无锡，约 45-60km；第二天无锡-浦东终点会过长，不建议除非增加一天。",
     longOption: "多骑：到昆山，约 125-135km；可显著降低 D12 进上海压力。",
+    detours: [
+      { type: "风景", text: "太湖/运河慢行线可作为舒适支线，但绕路多时优先保留体力。" },
+      { type: "加里程", text: "如果到苏州很早且状态好，推进到昆山能明显降低最后一天压力。" },
+    ],
     why: "常州-无锡-苏州走 G312 辅路和运河/太湖慢行线，住宿与维修密度高。替代线贴太湖南岸风景更好，但绕路多，不符合 12 天压缩目标。",
     points: [
       ["常州", 119.9741, 31.8112],
@@ -269,6 +315,11 @@ const plan = [
     food: "到浦东后可吃本帮面、排骨年糕、小笼、生煎或盖浇饭；最后一天先保证补水和正餐，再考虑庆祝餐。",
     shortOption: "少骑：住青浦或虹桥外缘，约 45-80km；第二天白天再过江到浦东金桥。",
     longOption: "多骑：无必要。已经到终点；如果前一天住昆山，D12 会轻松很多。",
+    detours: [
+      { type: "避险", text: "过江优先查可带自行车轮渡，绝不走隧道、高架或禁行桥。" },
+      { type: "撤退", text: "青浦、虹桥外缘、浦西轮渡附近都适合最后一天状态差时拆分。" },
+      { type: "风景", text: "时间充足可从青浦贴淀山湖慢行，但不要因此夜骑进浦东。" },
+    ],
     why: "终点在浦东金桥，路线需要解决上海西入城和过黄浦江两个问题。选择青浦/虹桥外缘进城，再用可带自行车轮渡转浦东，比硬找隧道、高架或大桥安全。替代线可从昆山更北侧经嘉定、宝山绕到浦东，但绕路大、货车多。",
     points: [
       ["苏州", 120.5853, 31.2989],
@@ -290,6 +341,13 @@ let selectedDayIndex = 0;
 const statusEl = document.querySelector("#map-status");
 const listEl = document.querySelector("#day-list");
 const daySelectorEl = document.querySelector("#day-selector");
+
+function viewportPadding(extra = 0) {
+  const isStacked = window.matchMedia("(max-width: 860px)").matches;
+  return isStacked
+    ? [96 + extra, 40 + extra, 48 + extra, 40 + extra]
+    : [64 + extra, 64 + extra, 64 + extra, 64 + extra];
+}
 
 function formatRoute(day) {
   return day.route;
@@ -336,9 +394,16 @@ function renderList() {
   node.querySelector(".day-roads").textContent = `${day.roads} 途经：${dayPlaces(day)}。`;
   node.querySelector(".day-risk").textContent = day.riskText;
   node.querySelector(".day-options").textContent = `少骑：${day.shortOption} 多骑：${day.longOption}`;
+  node.querySelector(".day-detours").innerHTML = renderDetours(day.detours);
   node.querySelector(".day-why").textContent = day.why;
   node.querySelector(".day-button").addEventListener("click", () => focusSelectedDay());
   listEl.appendChild(node);
+}
+
+function renderDetours(detours = []) {
+  return detours
+    .map((detour) => `<span class="detour-chip"><strong>${detour.type}</strong>${detour.text}</span>`)
+    .join("");
 }
 
 function isHardDay(day) {
@@ -367,7 +432,7 @@ function focusSelectedDay() {
   const lats = path.map((point) => point[1]);
   const southWest = new AMap.LngLat(Math.min(...lngs), Math.min(...lats));
   const northEast = new AMap.LngLat(Math.max(...lngs), Math.max(...lats));
-  map.setBounds(new AMap.Bounds(southWest, northEast), false, [120, 120, 120, 120]);
+  map.setBounds(new AMap.Bounds(southWest, northEast), false, viewportPadding(72));
 }
 
 function clearMapObjects() {
@@ -377,7 +442,7 @@ function clearMapObjects() {
   markers = [];
 }
 
-function fitFullRoute(padding = [56, 56, 56, 56]) {
+function fitFullRoute(padding = viewportPadding()) {
   if (!map || !window.AMap) return;
   const objects = [...polylines, ...markers];
   if (objects.length) {
@@ -486,41 +551,16 @@ function initMap() {
   drawManualMap();
 }
 
-function drawRidingSegment(riding, day, start, end) {
-  return new Promise((resolve) => {
-    riding.search(start, end, (status) => resolve(status === "complete"));
-  });
-}
-
-async function tryRidingRoutes() {
-  if (!map || !window.AMap || !AMap.Riding) return;
-  const riding = new AMap.Riding({ map, hideMarkers: true });
-  let complete = 0;
-  let failed = 0;
-  for (const day of plan) {
-    const path = dayPath(day);
-    for (let index = 0; index < path.length - 1; index += 1) {
-      const ok = await drawRidingSegment(riding, day, path[index], path[index + 1]);
-      complete += 1;
-      if (!ok) failed += 1;
-    }
-  }
-  statusEl.textContent = failed
-    ? `高德地图已加载；${failed}/${complete} 个分段未返回骑行规划，已保留手工分日路线。`
-    : "高德地图已加载，并已按每日途经点尝试绘制骑行路线。";
-  fitFullRoute();
-}
-
 async function autoLoadAmap() {
   if (!MAP_CONFIG.amapKey) {
-    statusEl.textContent = "公开版未配置在线地图；可查看左侧每日路线、住宿、美食和备选方案。";
+    statusEl.textContent = "可查看每日路线、住宿、美食和备选方案。";
     return;
   }
-  statusEl.textContent = "正在加载高德地图...";
+  statusEl.textContent = "地图加载中。";
   try {
     await loadAmap(MAP_CONFIG.amapKey);
     initMap();
-    statusEl.textContent = "高德地图已加载，已显示完整分日路线。点击 1-12 可查看单日路线。";
+    statusEl.textContent = "点击 1-12 查看单日路线。";
   } catch (error) {
     statusEl.textContent = `${error.message}。当前机器的代理可能拦截了 webapi.amap.com；请把 webapi.amap.com 加入代理直连，或关闭代理后刷新。`;
   }

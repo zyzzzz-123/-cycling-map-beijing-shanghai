@@ -56,13 +56,6 @@ input {
   padding-bottom: 18px;
 }
 
-.eyebrow {
-  margin: 0 0 8px;
-  color: var(--accent-strong);
-  font-size: 13px;
-  font-weight: 700;
-}
-
 h1 {
   margin: 0;
   font-size: 28px;
@@ -373,6 +366,26 @@ button.secondary {
 
 .day-detail dd {
   margin: 0;
+}
+
+.day-detours {
+  display: grid;
+  gap: 6px;
+}
+
+.detour-chip {
+  display: block;
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  background: #f5fbf8;
+  padding: 7px 8px;
+  color: var(--muted);
+}
+
+.detour-chip strong {
+  display: inline-block;
+  margin-right: 6px;
+  color: var(--accent-strong);
 }
 
 .map-area {

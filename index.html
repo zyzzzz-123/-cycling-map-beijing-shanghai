@@ -10,7 +10,6 @@
     <main class="app-shell">
       <section class="sidebar" aria-label="骑行计划">
         <header class="trip-header">
-          <p class="eyebrow">低爬升快线</p>
           <h1>清华大学到浦发有家申鸿苑骑行计划</h1>
           <div class="stats">
             <span><strong>12</strong> 骑行日</span>
@@ -20,7 +19,7 @@
         </header>
 
         <section class="api-panel" aria-label="地图加载状态">
-          <p id="map-status" class="status">公开版显示分日路线说明；本地配置地图服务后可加载在线地图。</p>
+          <p id="map-status" class="status">地图加载中。</p>
         </section>
 
         <div class="day-selector" id="day-selector" role="group" aria-label="选择骑行日"></div>
@@ -77,6 +76,10 @@
             <dd class="day-options"></dd>
           </div>
           <div>
+            <dt>可考虑支线</dt>
+            <dd class="day-detours"></dd>
+          </div>
+          <div>
             <dt>选择理由与替代线</dt>
             <dd class="day-why"></dd>
           </div>
@@ -85,6 +88,6 @@
     </template>
 
     <script src="./config.public.js?v=20260625-1"></script>
-    <script src="./app.js?v=20260626-4"></script>
+    <script src="./app.js?v=20260626-6"></script>
   </body>
 </html>

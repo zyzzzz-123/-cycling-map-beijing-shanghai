@@ -386,6 +386,33 @@ button.secondary {
       center / cover no-repeat;
 }
 
+.map-tools {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 4;
+  display: flex;
+  gap: 8px;
+}
+
+.map-tool-button {
+  min-width: 94px;
+  min-height: 40px;
+  border: 1px solid rgba(32, 33, 31, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 253, 247, 0.96);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.map-tool-button.active {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
 .legend {
   position: absolute;
   right: 18px;
@@ -468,5 +495,16 @@ button.secondary {
 
   .day-selector {
     grid-template-columns: repeat(4, 1fr);
+  }
+
+  .map-tools {
+    top: 12px;
+    left: 12px;
+  }
+
+  .map-tool-button {
+    min-width: 86px;
+    min-height: 36px;
+    font-size: 12px;
   }
 }

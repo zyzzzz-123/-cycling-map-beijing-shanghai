@@ -336,10 +336,65 @@ const plan = [
 let map = null;
 let polylines = [];
 let markers = [];
+let terrainMode = false;
+let terrainLayers = [];
+let terrainOverlays = [];
 let selectedDayIndex = 0;
 
 const listEl = document.querySelector("#day-list");
 const daySelectorEl = document.querySelector("#day-selector");
+const terrainToggleEl = document.querySelector("#terrain-toggle");
+
+const terrainZones = [
+  {
+    title: "鲁中/泰山丘陵避开区",
+    copy: "济南-泰安-曲阜更短但起伏和城市交通更重",
+    center: [117.13, 36.0],
+    color: "#b42318",
+    path: [
+      [116.55, 36.6],
+      [117.4, 36.75],
+      [118.05, 36.25],
+      [117.85, 35.35],
+      [116.95, 35.25],
+      [116.45, 35.75],
+    ],
+  },
+  {
+    title: "滕州/鲁南丘陵边缘",
+    copy: "滕州固定后，这一带是全程爬升最集中的位置",
+    center: [117.22, 35.08],
+    color: "#b45309",
+    path: [
+      [116.85, 35.45],
+      [117.55, 35.48],
+      [117.85, 34.92],
+      [117.55, 34.55],
+      [116.95, 34.7],
+      [116.75, 35.05],
+    ],
+  },
+  {
+    title: "华北-江淮低地走廊",
+    copy: "主线沿运河、湖西和平原推进，用少量绕行换低爬升",
+    center: [118.4, 33.3],
+    color: "#0f766e",
+    path: [
+      [116.0, 38.6],
+      [116.7, 38.45],
+      [117.0, 36.8],
+      [117.3, 35.2],
+      [118.4, 33.8],
+      [119.6, 32.5],
+      [121.3, 31.3],
+      [121.0, 30.95],
+      [118.8, 31.85],
+      [117.7, 33.1],
+      [116.2, 35.9],
+      [115.55, 37.7],
+    ],
+  },
+];
 
 function viewportPadding(extra = 0) {
   const isStacked = window.matchMedia("(max-width: 860px)").matches;
@@ -420,6 +475,7 @@ function selectDay(index) {
   renderDaySelector();
   renderList();
   drawManualMap({ fitAll: false });
+  if (terrainMode) drawTerrainOverlays();
   focusSelectedDay();
 }
 
@@ -428,6 +484,7 @@ function focusSelectedDay() {
   const dayObjects = [...polylines, ...markers].filter((item) => item.__dayIndex === selectedDayIndex);
   if (dayObjects.length) {
     map.setFitView(dayObjects, false, viewportPadding(100));
+    applyMapView();
   }
 }
 
@@ -438,11 +495,18 @@ function clearMapObjects() {
   markers = [];
 }
 
+function clearTerrainOverlays() {
+  if (!map || !window.AMap) return;
+  terrainOverlays.forEach((item) => map.remove(item));
+  terrainOverlays = [];
+}
+
 function fitFullRoute(padding = viewportPadding()) {
   if (!map || !window.AMap) return;
   const objects = [...polylines, ...markers];
   if (objects.length) {
     map.setFitView(objects, false, padding);
+    applyMapView();
   }
 }
 
@@ -482,6 +546,89 @@ function drawManualMap(options = {}) {
   });
 
   if (fitAll) fitFullRoute();
+}
+
+function createTerrainLayers() {
+  if (!window.AMap || terrainLayers.length) return;
+  if (AMap.TileLayer?.Satellite) {
+    terrainLayers.push(new AMap.TileLayer.Satellite());
+  }
+  if (AMap.TileLayer?.RoadNet) {
+    terrainLayers.push(new AMap.TileLayer.RoadNet());
+  }
+  if (AMap.Buildings) {
+    terrainLayers.push(
+      new AMap.Buildings({
+        zooms: [10, 20],
+        zIndex: 11,
+      }),
+    );
+  }
+}
+
+function drawTerrainOverlays() {
+  if (!terrainMode || !map || !window.AMap) return;
+  clearTerrainOverlays();
+
+  terrainZones.forEach((zone) => {
+    const polygon = new AMap.Polygon({
+      path: zone.path,
+      strokeColor: zone.color,
+      strokeOpacity: 0.85,
+      strokeWeight: 2,
+      fillColor: zone.color,
+      fillOpacity: zone.color === "#0f766e" ? 0.12 : 0.16,
+      zIndex: zone.color === "#0f766e" ? 18 : 20,
+      map,
+    });
+    terrainOverlays.push(polygon);
+
+    const label = new AMap.Marker({
+      position: zone.center,
+      anchor: "center",
+      content: `<div class="terrain-label"><strong>${zone.title}</strong><span>${zone.copy}</span></div>`,
+      zIndex: 120,
+      map,
+    });
+    terrainOverlays.push(label);
+  });
+}
+
+function applyMapView() {
+  if (!map) return;
+  if (typeof map.setPitch === "function") {
+    map.setPitch(terrainMode ? 55 : 0);
+  }
+  if (typeof map.setRotation === "function") {
+    map.setRotation(terrainMode ? -18 : 0);
+  }
+}
+
+function setTerrainMode(enabled) {
+  if (!map || !window.AMap) return;
+  terrainMode = enabled;
+  terrainToggleEl?.classList.toggle("active", terrainMode);
+  terrainToggleEl?.setAttribute("aria-pressed", String(terrainMode));
+  if (terrainToggleEl) {
+    terrainToggleEl.textContent = terrainMode ? "退出 3D" : "3D 地势";
+  }
+
+  createTerrainLayers();
+  terrainLayers.forEach((layer) => {
+    if (terrainMode) {
+      map.add(layer);
+    } else {
+      map.remove(layer);
+    }
+  });
+
+  if (terrainMode) {
+    drawTerrainOverlays();
+  } else {
+    clearTerrainOverlays();
+  }
+  applyMapView();
+  fitFullRoute(viewportPadding(120));
 }
 
 function openInfo(day, index) {
@@ -537,7 +684,9 @@ function initMap() {
   map = new AMap.Map("map", {
     zoom: 6,
     center: [118.62, 35.55],
-    viewMode: "2D",
+    viewMode: "3D",
+    pitch: 0,
+    rotation: 0,
     mapStyle: "amap://styles/normal",
   });
   map.addControl(new AMap.Scale());
@@ -559,6 +708,7 @@ async function autoLoadAmap() {
 
 renderDaySelector();
 renderList();
+terrainToggleEl?.addEventListener("click", () => setTerrainMode(!terrainMode));
 autoLoadAmap();
 
 const markerStyle = document.createElement("style");
@@ -578,6 +728,26 @@ markerStyle.textContent = `
     padding: 0 5px;
   }
   .risk-marker { background: #b42318; }
+  .terrain-label {
+    display: grid;
+    gap: 3px;
+    width: 178px;
+    border: 1px solid rgba(32, 33, 31, .16);
+    border-radius: 8px;
+    background: rgba(255, 253, 247, .92);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
+    padding: 9px 10px;
+    color: #20211f;
+    line-height: 1.35;
+    white-space: normal;
+  }
+  .terrain-label strong {
+    font-size: 12px;
+  }
+  .terrain-label span {
+    color: #686b61;
+    font-size: 11px;
+  }
   .info-window {
     max-width: 260px;
     color: #20211f;

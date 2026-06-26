@@ -26,6 +26,11 @@
       <section class="map-area" aria-label="地图">
         <div id="fallback-map" class="fallback-map" aria-hidden="true"></div>
         <div id="map" class="map"></div>
+        <div class="map-tools" aria-label="地图工具">
+          <button id="terrain-toggle" class="map-tool-button" type="button" aria-pressed="false">
+            3D 地势
+          </button>
+        </div>
         <aside class="legend">
           <span><i class="line-main"></i> 中低风险</span>
           <span><i class="line-hard"></i> 高风险</span>
@@ -80,6 +85,6 @@
     </template>
 
     <script src="./config.public.js?v=20260625-1"></script>
-    <script src="./app.js?v=20260626-7"></script>
+    <script src="./app.js?v=20260626-8"></script>
   </body>
 </html>

@@ -363,9 +363,11 @@ function focusSelectedDay() {
   if (!map || !window.AMap) return;
   const day = plan[selectedDayIndex];
   const path = dayPath(day);
-  const focusLine = new AMap.Polyline({ path });
-  const focusMarkers = path.map((point) => new AMap.Marker({ position: point }));
-  map.setFitView([focusLine, ...focusMarkers], false, [90, 90, 90, 90]);
+  const lngs = path.map((point) => point[0]);
+  const lats = path.map((point) => point[1]);
+  const southWest = new AMap.LngLat(Math.min(...lngs), Math.min(...lats));
+  const northEast = new AMap.LngLat(Math.max(...lngs), Math.max(...lats));
+  map.setBounds(new AMap.Bounds(southWest, northEast), false, [120, 120, 120, 120]);
 }
 
 function clearMapObjects() {
@@ -518,8 +520,7 @@ async function autoLoadAmap() {
   try {
     await loadAmap(MAP_CONFIG.amapKey);
     initMap();
-    statusEl.textContent = "高德地图已加载。正在尝试按途经点绘制每日骑行路线...";
-    tryRidingRoutes();
+    statusEl.textContent = "高德地图已加载，已显示完整分日路线。点击 1-12 可查看单日路线。";
   } catch (error) {
     statusEl.textContent = `${error.message}。当前机器的代理可能拦截了 webapi.amap.com；请把 webapi.amap.com 加入代理直连，或关闭代理后刷新。`;
   }
